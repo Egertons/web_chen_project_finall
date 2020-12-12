@@ -25,7 +25,6 @@ import com.example.mvc.meal.services.TypeService;
 @Controller
 public class FoodController {
 	FoodService foodService = new FoodService();
-	TypeService typeService = new TypeService();
 
 	@RequestMapping("/admin/food_list")
 	public ModelAndView userList(String c_un,String type,String pageno) {
