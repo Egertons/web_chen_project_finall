@@ -36,4 +36,8 @@ public class FoodService {
     public Map findfoodtype_id(String id) {
 		return dao.findfoodtype_id(id);
     }
+
+    public boolean deleteFoodById(int id) {
+		return dao.deleteFoodById(id);
+    }
 }

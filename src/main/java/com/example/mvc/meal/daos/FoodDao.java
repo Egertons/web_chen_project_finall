@@ -31,30 +31,11 @@ public class FoodDao {
 	}
 
 
-	//这里可能有问题
+	//这里逻辑有问题
 	public boolean addFood(Map<String, String> food) {
-		int type = 7;
-		String y_ty = food.get("type");
-		switch (y_ty) {
-			case "主食":
-				type = 3;
-				break;
-			case "凉菜":
-				type = 2;
-				break;
-			case "副食":
-				type = 6;
-				break;
-			case "家常":
-				type = 1;
-				break;
-			case "饮品":
-				type = 4;
-				break;
-		}
 		try {
-			String sql="insert into food(foodname,feature,material,price,type,picture,hits,comment) values(?,?,?,?,?,null,0,0)";
-			return JDBCTemplate.update(sql, food.get("fn"),food.get("caipinte"),food.get("yuanliao"),food.get("price"),type);
+			String sql="insert into food(foodname,feature,material,price,hits,comment) values(?,?,?,?,0,0)";
+			return JDBCTemplate.update(sql, food.get("fn"),food.get("caipinte"),food.get("yuanliao"),food.get("price"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -81,5 +62,15 @@ public class FoodDao {
 			e.printStackTrace();
 		}
 		return result;
+	}
+
+	public boolean deleteFoodById(int id) {
+		try {
+			String sql="delete from food where id = ?";
+			return JDBCTemplate.update(sql,id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 }

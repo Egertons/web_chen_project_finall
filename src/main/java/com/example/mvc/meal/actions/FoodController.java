@@ -84,4 +84,18 @@ public class FoodController {
 		request.setAttribute("href", request.getContextPath()+"/admin/food_list.do");
 		return "result";
 	}
+
+	//管理员界面的菜品删除
+	@RequestMapping("/admin/del_food")
+	public ModelAndView deleteFood(HttpServletRequest request, int id) {
+		ModelAndView mv = new ModelAndView("result");
+		boolean result = foodService.deleteFoodById(id);
+		if(result) {
+			mv.addObject("msg", "菜品删除成功");
+		}else {
+			mv.addObject("msg", "菜品删除成功");
+		}
+		mv.addObject("href", request.getContextPath()+"/admin/food_list.do");
+		return mv;
+	}
 }
