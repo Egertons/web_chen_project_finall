@@ -80,11 +80,45 @@ public class HomeController {
 		return "result";
 	}
 
+	@RequestMapping("/user/user_index")
+	public ModelAndView UserIndex(HttpServletRequest request) throws ServletException, IOException {
+		String s_name = request.getParameter("s_fn");
+
+		String name = "";
+		if(s_name!=null) {
+			name="%"+s_name.trim()+"%";
+		}else {
+			name="%%";
+		}
+
+		String s_type = request.getParameter("s_type");
+
+		String f_type = "";
+		if(s_type!=null){
+			f_type="%"+s_type.trim()+"%";
+		}else{
+			f_type="%%";
+		}
+
+		String pageno = request.getParameter("pageno");
+		int page_no;
+		if(pageno!=null){
+			page_no=Integer.parseInt(pageno);
+		}else{
+			page_no=1;
+		}
+		ModelAndView mv=new ModelAndView("user/user_index");
+		Map foods=foodService.getFoods(name,f_type,page_no);
+		List types=typeService.getAllType();
+		mv.addObject("foods", foods);
+		mv.addObject("types", types);
+		mv.addObject("s_name", s_name);
+		mv.addObject("s_type", s_type);
+		return mv;
+	}
 	//首页登录
 	@RequestMapping("/login")
 	public String login(String un, String pw,HttpSession session, HttpServletRequest request){
-		System.out.println(un);
-		System.out.println(pw);
 		if(un==null||pw==null||un.trim().equals("")||pw.trim().equals("")) {
 			request.setAttribute("msg", "用户名密码不能为空");
 			request.setAttribute("href", request.getContextPath()+"/index.do");

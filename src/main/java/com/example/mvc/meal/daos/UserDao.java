@@ -57,8 +57,18 @@ public class UserDao {
 
     public boolean updateUser(Map<String, String> user) {
         try {
-            String sql="update  user set username=?,password=?,ident=?,telephone=?,address=? where id=?";
+            String sql="update user set username=?,password=?,ident=?,telephone=?,address=? where id=?";
             return JDBCTemplate.update(sql, user.get("un"),user.get("pw"),user.get("ident"),user.get("tel"),user.get("addr"),user.get("id"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean PuTongupdateUser(Map<String, String> user) {
+        try {
+            String sql="update user set username=?,password=?,telephone=?,address=? where id=?";
+            return JDBCTemplate.update(sql, user.get("un"),user.get("pw"),user.get("tel"),user.get("addr"),user.get("id"));
         } catch (Exception e) {
             e.printStackTrace();
         }

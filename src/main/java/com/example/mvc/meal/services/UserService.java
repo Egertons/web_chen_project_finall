@@ -28,4 +28,8 @@ public class UserService {
     public boolean updateUser(Map<String, String> user) {
         return dao.updateUser(user);
     }
+
+    public boolean PuTongupdateUser(Map<String, String> user) {
+        return dao.PuTongupdateUser(user);
+    }
 }

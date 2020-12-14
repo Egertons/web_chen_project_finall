@@ -37,8 +37,16 @@ public class UserController {
 
 	//管理员界面的用户详情信息修改
 	@RequestMapping("/admin/modify_user")
-	public ModelAndView userModifyForm(int id) {
+	public ModelAndView AdminModifyForm(int id) {
 		ModelAndView mv = new ModelAndView("admin/user_modify_form");
+		Map user = userService.findUserById(id);
+		mv.addObject("user", user);
+		return mv;
+	}
+	//普通用户界面的用户详情信息修改
+	@RequestMapping("/user/user_modify")
+	public ModelAndView userModifyForm(int id) {
+		ModelAndView mv = new ModelAndView("user/user_modify_form");
 		Map user = userService.findUserById(id);
 		mv.addObject("user", user);
 		return mv;
@@ -48,6 +56,11 @@ public class UserController {
 	@RequestMapping("/admin/useraddform")
 	public String userAddForm() {
 		return "admin/user_add_form";
+	}
+
+	@RequestMapping("/user/show_cart")
+	public String show_cart() {
+		return "user/show_cart";
 	}
 
 	//供管理员页面中“添加用户”的特定jsp的数据处理
@@ -66,9 +79,9 @@ public class UserController {
 		user.put("addr", addr);
 		boolean result=userService.addUser(user);
 		if(result) {
-			request.setAttribute("msg", "注册成功");
+			request.setAttribute("msg", "添加成功");
 		}else {
-			request.setAttribute("msg", "注册失败");
+			request.setAttribute("msg", "添加失败");
 		}
 		request.setAttribute("href", request.getContextPath()+"/admin/user_list.do");
 		return "result";
@@ -98,9 +111,30 @@ public class UserController {
 		}
 		request.setAttribute("href", request.getContextPath()+"/admin/user_list.do");
 		return "result";
-
 	}
 
+	@RequestMapping("/user/user_update")
+	public String PuTonguserUpdate(HttpServletRequest request) {
+		String id=request.getParameter("id");
+		String un=request.getParameter("un");
+		String pw=request.getParameter("pw");
+		String tel=request.getParameter("tel");
+		String addr=request.getParameter("addr");
+		Map<String,String> user=new HashMap();
+		user.put("id", id);
+		user.put("un", un);
+		user.put("pw", pw);
+		user.put("tel", tel);
+		user.put("addr", addr);
+		boolean result=userService.PuTongupdateUser(user);
+		if(result) {
+			request.setAttribute("msg", "更新成功");
+		}else {
+			request.setAttribute("msg", "更新失败");
+		}
+		request.setAttribute("href", request.getContextPath()+"/user/user_index.do");
+		return "result";
+	}
 	//管理员界面的用户删除
 	@RequestMapping("/admin/del_user")
 	public ModelAndView deleteUser(HttpServletRequest request, int id) {

@@ -39,7 +39,7 @@
                         </ul>
                         <ul class="nav justify-content-end">
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"> admin </a>
+                                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"> ${user.username} </a>
                                 <ul class="dropdown-menu dropdown-menu-right">
                                     <li>
                                         <a class="nav-link" href="${pageContext.servletContext.contextPath}/index.do">退出登录</a>

@@ -31,15 +31,9 @@ public class FoodDao {
 	}
 
 
-	//这里逻辑有问题
-	public boolean addFood(Map<String, String> food) {
-		try {
-			String sql="insert into food(foodname,feature,material,price,hits,comment) values(?,?,?,?,0,0)";
-			return JDBCTemplate.update(sql, food.get("fn"),food.get("caipinte"),food.get("yuanliao"),food.get("price"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
+	public boolean addFood(Map food) {
+		String sql="insert into food ( foodname,feature,material,price,type,picture,hits,comment) values(?,?,?,?,?,?,0,?)";
+		return JDBCTemplate.update(sql, food.get("fn"), food.get("fea"), food.get("mat"), food.get("price"), food.get("type"), food.get("img"), food.get("com"));
 	}
 
 	public Map findfoodById(String id) {
@@ -73,4 +67,23 @@ public class FoodDao {
 		}
 		return false;
 	}
+
+	public Map findFoodById(int id) {
+		Map result=null;
+		String sql="select * from food where id=?";
+		try {
+			result= JDBCTemplate.queryForMap(sql, id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+    public boolean updateFood(Map food) {
+		System.out.println(food);
+		String sql = "update food set foodname=?,feature=?,material=?,price=?,type=?,picture=?,hits=?,comment=? where id=?";
+		String fn = (String)food.get("f_un");
+		System.out.println("FoodDao在修改菜品信息的时候已经获取到："+fn);
+		return JDBCTemplate.update(sql, food.get("f_un"), food.get("fea"), food.get("mat"), food.get("price"), food.get("type"), food.get("img"),0, food.get("com"), food.get("id"));
+    }
 }

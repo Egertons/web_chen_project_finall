@@ -31,4 +31,8 @@ public class TypeService {
     public Map findTypeById(int id) {
         return typeDao.findTypeById(id);
     }
+
+    public List getAllType() {
+        return typeDao.getAllType();
+    }
 }

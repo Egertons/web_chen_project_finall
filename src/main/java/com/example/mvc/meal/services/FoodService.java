@@ -40,4 +40,13 @@ public class FoodService {
     public boolean deleteFoodById(int id) {
 		return dao.deleteFoodById(id);
     }
+
+	public Map findFoodById(int id) {
+		return dao.findFoodById(id);
+	}
+
+    public boolean updateFood(Map food) {
+		System.out.println("Service  updateFood已访问到");
+		return dao.updateFood(food);
+    }
 }

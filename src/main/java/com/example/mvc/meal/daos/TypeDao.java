@@ -67,4 +67,9 @@ public class TypeDao {
         }
         return result;
     }
+
+    public List getAllType() {
+        String sql="select * from foodtype";
+        return JDBCTemplate.queryForList(sql);
+    }
 }
