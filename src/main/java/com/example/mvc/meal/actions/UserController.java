@@ -58,11 +58,6 @@ public class UserController {
 		return "admin/user_add_form";
 	}
 
-	@RequestMapping("/user/show_cart")
-	public String show_cart() {
-		return "user/show_cart";
-	}
-
 	//供管理员页面中“添加用户”的特定jsp的数据处理
 	@RequestMapping("/admin/user_add")
 	public String userAdd(HttpServletRequest request) {
