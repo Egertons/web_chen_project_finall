@@ -17,39 +17,9 @@
 </head>
 <body>
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12 col-12">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
-                <a class="navbar-brand" href="${pageContext.servletContext.contextPath}/index.do">
-                    <span class="text-info">网络点餐系统</span>
-                </a>
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="${pageContext.servletContext.contextPath}/admin/user_list.do">用户管理</a>
-                    </li>
-                    <li class="nav-item ">
-                        <a class="nav-link" href="${pageContext.servletContext.contextPath}/admin/type_list.do">菜品分类管理</a>
-                    </li>
-                    <li class="nav-item ">
-                        <a class="nav-link" href="${pageContext.servletContext.contextPath}/admin/food_list.do">菜品管理</a>
-                    </li>
-                    <li class="nav-item ">
-                        <a class="nav-link" href="${pageContext.servletContext.contextPath}/admin/cart_show.do">查看用户点餐情况</a>
-                    </li>
-                </ul>
-                <ul class="nav justify-content-end">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">${user.username} </a>
-                        <ul class="dropdown-menu dropdown-menu-right">
-                            <li>
-                                <a class="nav-link" href="${pageContext.servletContext.contextPath}/index.do">退出登录</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
+    <jsp:include page="../nav.jsp">
+        <jsp:param value="food" name="fun"/>
+    </jsp:include>
 
     <div class="row">
         <div class="col-md-1 col-0"></div>

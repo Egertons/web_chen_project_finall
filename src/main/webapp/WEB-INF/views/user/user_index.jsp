@@ -21,33 +21,9 @@
     </head>
     <body>
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12 col-12">
-                    <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
-                        <a class="navbar-brand" href="${pageContext.servletContext.contextPath}/index.do">
-                            <span class="text-info">网络点餐系统</span>
-                        </a>
-                        <ul class="navbar-nav mr-auto">
-                            <li class="nav-item active">
-                                <a class="nav-link" href="${pageContext.servletContext.contextPath}/user/user_index.do">正在点餐</a>
-                            </li>
-                            <li class="nav-item ">
-                                <a class="nav-link" href="${pageContext.servletContext.contextPath}/user/show_cart.do">我的点餐</a>
-                            </li>
-                        </ul>
-                        <ul class="nav justify-content-end">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"> ${user.username} </a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/user/user_modify.do?id=${user.id}">修改个人资料</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="${pageContext.servletContext.contextPath}/index.do">退出登录</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
+            <jsp:include page="../nav.jsp">
+                <jsp:param value="carting" name="fun"/>
+            </jsp:include>
         </div>
         <div class="container-fluid">
             <div class="card border">

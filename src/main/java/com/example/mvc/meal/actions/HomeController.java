@@ -116,6 +116,11 @@ public class HomeController {
 		mv.addObject("s_type", s_type);
 		return mv;
 	}
+	@RequestMapping("/logout")
+	public String logout(HttpSession session){
+		session.invalidate();
+		return "redirect:index.do";
+	}
 	//首页登录
 	@RequestMapping("/login")
 	public String login(String un, String pw,HttpSession session, HttpServletRequest request){
