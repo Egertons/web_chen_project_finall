@@ -1,5 +1,14 @@
 package com.example.mvc.meal.actions;
-
+/**
+ * 该类为主页面以及网站中主要业务逻辑的“前端控制器”
+ *
+ * @author ZhangLin
+ * @version $Revision: 12.18 2020/12/18
+ *
+ * 变更记录
+ * NO　　　  日期             责任人             变更类型           具体内容
+ * 01　　    2020/12/18      张  霖           代码格式规范　　　　
+ */
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -7,28 +16,23 @@ import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.PageContext;
 
 import com.example.mvc.framework.annotations.Controller;
 import com.example.mvc.framework.annotations.RequestMapping;
 import com.example.mvc.framework.model.ModelAndView;
-import com.example.mvc.meal.daos.UserDao;
 import com.example.mvc.meal.services.CartService;
 import com.example.mvc.meal.services.FoodService;
 import com.example.mvc.meal.services.TypeService;
 import com.example.mvc.meal.services.UserService;
 
-//前端控制器
 @Controller
 public class HomeController {
 	FoodService foodService = new FoodService();
 	TypeService typeService = new TypeService();
-	CartService cartService = new CartService();
 	UserService userService = new UserService();
 
-	//网站的首页
+	//网站首页
 	@RequestMapping("/index")
 	public ModelAndView homepage(){
 		List<Map> hots = foodService.getHotFoods();//获取热点菜品列表
@@ -40,22 +44,6 @@ public class HomeController {
 		mv.addObject("recommeds", recommeds);
 		return mv;
 	}
-
-	//网站首页中各个菜品的详情介绍
-	@RequestMapping("/show_detail")
-	public ModelAndView show_detail(HttpServletRequest request){
-		String id = request.getParameter("id");
-		ModelAndView mv = new ModelAndView("/show_detail");
-		Map food = foodService.findfoodById(id);
-		Map f_type_id = foodService.findfoodtype_id(id);
-		String type_id = f_type_id.get("type").toString();
-		Map foodtype = typeService.findtypeById(type_id);
-		mv.addObject("food", food);
-		mv.addObject("foodtype",foodtype);
-		return mv;
-	}
-
-
 
 	//首页注册
 	@RequestMapping("/register")
@@ -80,47 +68,6 @@ public class HomeController {
 		return "result";
 	}
 
-	@RequestMapping("/user/user_index")
-	public ModelAndView UserIndex(HttpServletRequest request) throws ServletException, IOException {
-		String s_name = request.getParameter("s_fn");
-
-		String name = "";
-		if(s_name!=null) {
-			name="%"+s_name.trim()+"%";
-		}else {
-			name="%%";
-		}
-
-		String s_type = request.getParameter("s_type");
-
-		String f_type = "";
-		if(s_type!=null){
-			f_type="%"+s_type.trim()+"%";
-		}else{
-			f_type="%%";
-		}
-
-		String pageno = request.getParameter("pageno");
-		int page_no;
-		if(pageno!=null){
-			page_no=Integer.parseInt(pageno);
-		}else{
-			page_no=1;
-		}
-		ModelAndView mv=new ModelAndView("user/user_index");
-		Map foods=foodService.getFoods(name,f_type,page_no);
-		List types=typeService.getAllType();
-		mv.addObject("foods", foods);
-		mv.addObject("types", types);
-		mv.addObject("s_name", s_name);
-		mv.addObject("s_type", s_type);
-		return mv;
-	}
-	@RequestMapping("/logout")
-	public String logout(HttpSession session){
-		session.invalidate();
-		return "redirect:index.do";
-	}
 	//首页登录
 	@RequestMapping("/login")
 	public String login(String un, String pw,HttpSession session, HttpServletRequest request){
@@ -144,5 +91,26 @@ public class HomeController {
 				}
 			}
 		}
+	}
+
+	//用户登出
+	@RequestMapping("/logout")
+	public String logout(HttpSession session){
+		session.invalidate();
+		return "redirect:index.do";
+	}
+
+	//网站首页中各个菜品的"详情介绍"
+	@RequestMapping("/show_detail")
+	public ModelAndView show_detail(HttpServletRequest request){
+		ModelAndView mv = new ModelAndView("/show_detail");
+		String id = request.getParameter("id");
+		Map food = foodService.findfoodById(id);
+		Map f_type_id = foodService.findfoodtype_id(id);
+		int type_id = (int)f_type_id.get("type");
+		Map foodtype = typeService.findTypeById(type_id);
+		mv.addObject("food", food);
+		mv.addObject("foodtype",foodtype);
+		return mv;
 	}
 }

@@ -50,7 +50,6 @@ public class FrontController extends HttpServlet {
 	private String encoding="utf-8";
 	@Override
 	public void init() throws ServletException {
-		System.out.println(this.getServletContext().getRealPath("/demo"));
 		this.packages = this.getInitParameter("packages").split(";");
 		this.viewLocation = this.getInitParameter("view_location");
 		this.suffix = this.getInitParameter("suffix");
@@ -63,7 +62,6 @@ public class FrontController extends HttpServlet {
 			dateFormat = new SimpleDateFormat("yyyy-mm-dd");
 		}
 		this.scanComponent();
-		System.out.println(this.mapping);
 	}
 
 	@SuppressWarnings("deprecation")

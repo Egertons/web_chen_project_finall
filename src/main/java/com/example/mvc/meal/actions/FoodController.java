@@ -1,6 +1,15 @@
 package com.example.mvc.meal.actions;
+/**
+ * 该类为Food相关页面以及业务逻辑的“前端控制器”
+ *
+ * @author ZhangLin
+ * @version $Revision: 12.18 2020/12/18
+ *
+ * 变更记录
+ * NO　　　  日期             责任人             变更类型           具体内容
+ * 01　　    2020/12/18      张  霖           代码格式规范　　　　
+ */
 import java.io.File;
-import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -8,11 +17,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
@@ -27,6 +34,7 @@ public class FoodController {
 	FoodService foodService = new FoodService();
 	TypeService typeService = new TypeService();
 
+	//该类为管理员页面“菜品管理”的前端控制
 	@RequestMapping("/admin/food_list")
 	public ModelAndView userList(String c_un,String type,String pageno) {
 		String name = "";
@@ -35,14 +43,12 @@ public class FoodController {
 		}else {
 			name="%%";
 		}
-
 		String f_type = "";
 		if(type!=null){
 			f_type="%"+type.trim()+"%";
 		}else{
 			f_type="%%";
 		}
-
 		int no = 1;
 		if(pageno!=null) {
 			no=Integer.parseInt(pageno);
@@ -55,7 +61,7 @@ public class FoodController {
 		return mv;
 	}
 
-
+	//该类为管理员页面“菜品修改”的前端“跳转”控制
 	@RequestMapping("/admin/modify_food")
 	public ModelAndView foodModifyForm(int id) {
 		ModelAndView mv = new ModelAndView("admin/food_modify_form");
@@ -66,23 +72,22 @@ public class FoodController {
 		return mv;
 	}
 
+	//该类为管理员页面“菜品更新”的前端控制
 	@RequestMapping("/admin/food_update")
 	public ModelAndView foodUpdate(HttpServletRequest request) throws Exception {
-		System.out.println("基础food_update映射方法已访问到");
 		ModelAndView mv = new ModelAndView("result");
-			Map food = this.processUploadForm(request);
-			System.out.println("此时已获取到food："+food.get("f_un"));
-			boolean result=foodService.updateFood(food);
-			System.out.println("此时result为："+result);
-			if(result) {
-				mv.addObject("msg", "菜品修改成功");
-			}else {
-				mv.addObject("msg", "菜品修改失败");
-			}
+		Map food = this.processUploadForm(request);
+		boolean result = foodService.updateFood(food);
+		if(result) {
+			mv.addObject("msg", "菜品修改成功");
+		}else {
+			mv.addObject("msg", "菜品修改失败");
+		}
 		mv.addObject("href", request.getContextPath()+"/admin/food_list.do");
 		return mv;
 	}
 
+	//该类为管理员页面关于“菜品添加”的前端“跳转”控制
 	@RequestMapping("/admin/foodaddform")
 	public ModelAndView AddForm() {
 		ModelAndView mv=new ModelAndView("admin/food_add_form");
@@ -91,43 +96,7 @@ public class FoodController {
 		return mv;
 	}
 
-
-	//针对文件上传的工具类
-	private Map processUploadForm(HttpServletRequest request) throws Exception{
-		// Create a factory for disk-based file items
-		DiskFileItemFactory factory = new DiskFileItemFactory();
-
-		// Configure a repository (to ensure a secure temp location is used)
-		ServletContext servletContext = request.getServletContext();
-		File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
-		factory.setRepository(repository);
-
-		// Create a new file upload handler
-		ServletFileUpload upload = new ServletFileUpload(factory);
-
-		// Parse the request
-		List<FileItem> items = upload.parseRequest(request);
-		Iterator<FileItem> iter = items.iterator();
-		Map data=new HashMap();
-		while (iter.hasNext()) {
-			FileItem item = iter.next();
-			if (item.isFormField()) {
-				data.put(item.getFieldName(), item.getString("UTF-8"));
-			} else {
-				String savePath=URLDecoder.decode(request.getServletContext().getRealPath("/uploads"));
-				File saveFolder=new File(savePath);
-				if(!saveFolder.exists()) saveFolder.mkdir();
-				String fileName=item.getName().substring(item.getName().lastIndexOf(File.separator)>0?item.getName().lastIndexOf(File.separator):0);
-				File saveFile=new File(savePath+File.separator+fileName);
-				if( saveFile.exists()) saveFile.delete();
-				item.write(saveFile);
-				data.put("img", "uploads"+"/"+fileName);
-			}
-		}
-		return data;
-	}
-
-
+	//该类为管理员页面关于“菜品添加”的前端控制
 	@RequestMapping("/admin/food_add")
 	public ModelAndView addFood(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("result");
@@ -158,5 +127,33 @@ public class FoodController {
 		}
 		mv.addObject("href", request.getContextPath()+"/admin/food_list.do");
 		return mv;
+	}
+
+	//针对文件上传的工具类
+	private Map processUploadForm(HttpServletRequest request) throws Exception{
+		DiskFileItemFactory factory = new DiskFileItemFactory();
+		ServletContext servletContext = request.getServletContext();
+		File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
+		factory.setRepository(repository);
+		ServletFileUpload upload = new ServletFileUpload(factory);
+		List<FileItem> items = upload.parseRequest(request);
+		Iterator<FileItem> iter = items.iterator();
+		Map data=new HashMap();
+		while (iter.hasNext()) {
+			FileItem item = iter.next();
+			if (item.isFormField()) {
+				data.put(item.getFieldName(), item.getString("UTF-8"));
+			} else {
+				String savePath=URLDecoder.decode(request.getServletContext().getRealPath("/uploads"));
+				File saveFolder=new File(savePath);
+				if(!saveFolder.exists()) saveFolder.mkdir();
+				String fileName=item.getName().substring(item.getName().lastIndexOf(File.separator)>0?item.getName().lastIndexOf(File.separator):0);
+				File saveFile=new File(savePath+File.separator+fileName);
+				if( saveFile.exists()) saveFile.delete();
+				item.write(saveFile);
+				data.put("img", "uploads"+"/"+fileName);
+			}
+		}
+		return data;
 	}
 }

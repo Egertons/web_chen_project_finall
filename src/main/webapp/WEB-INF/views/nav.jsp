@@ -6,7 +6,7 @@
             <div class="col-md-12 col-12">
                 <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
                     <a class="navbar-brand" href="index.do">
-                        <span class="text-info">网络点餐系统</span>
+                        <span class="text-info" style="letter-spacing: 5px">网络点餐系统</span>
                     </a>
                     <ul class="nav justify-content-end">
                         <li class="nav-item">
@@ -27,7 +27,7 @@
             <div class="col-md-12 col-12">
                 <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
                     <a class="navbar-brand" href="${pageContext.servletContext.contextPath}/index.do">
-                        <span class="text-info">网络点餐系统</span></a>
+                        <span class="text-info" style="letter-spacing: 5px">网络点餐系统</span></a>
                     <ul class="navbar-nav mr-auto">
                         <li class='nav-item ${param["fun"]=="user"?"active":"" }'>
                             <a class="nav-link" href="${pageContext.servletContext.contextPath}/admin/user_list.do">用户管理</a>
@@ -65,7 +65,7 @@
             <div class="col-md-12 col-12">
                 <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
                     <a class="navbar-brand" href="${pageContext.servletContext.contextPath}/index.do">
-                        <span class="text-info">网络点餐系统</span>
+                        <span class="text-info" style="letter-spacing: 5px">网络点餐系统</span>
                     </a>
                     <ul class="navbar-nav mr-auto">
                         <li class='nav-item ${param["fun"]=="carting"?"active":"" }'>

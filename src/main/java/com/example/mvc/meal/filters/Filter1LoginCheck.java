@@ -1,5 +1,13 @@
 package com.example.mvc.meal.filters;
-
+/**
+ * 该类为验证是否登录的过滤器
+ *
+ * @author ChenPeng
+ * @version $Revision: 12.18 2020/12/17
+ *
+ * 变更记录(暂无)
+ * NO　　　  日期             责任人             变更类型           具体内容　　　
+ */
 import java.io.IOException;
 import java.util.Map;
 
@@ -13,33 +21,16 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-/**
- * Servlet Filter implementation class Filter1LoginCheck
- */
 @WebFilter("/*")
 public class Filter1LoginCheck implements Filter {
 
-    /**
-     * Default constructor.
-     */
-    public Filter1LoginCheck() {
-        // TODO Auto-generated constructor stub
-    }
+    public Filter1LoginCheck() { }
 
-    /**
-     * @see Filter#destroy()
-     */
-    public void destroy() {
-        // TODO Auto-generated method stub
-    }
+    public void destroy() { }
 
-    /**
-     * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
-     */
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         HttpServletRequest hr = (HttpServletRequest) request;
-//		hr.setCharacterEncoding("utf-8");
         HttpSession session = hr.getSession();
         String path = hr.getServletPath();
         int temp = path.lastIndexOf('.');
@@ -47,7 +38,6 @@ public class Filter1LoginCheck implements Filter {
             String suffix = path.substring(temp + 1);
             String addr = path.substring(path.lastIndexOf('/') + 1, temp);
             if (suffix.equals("jsp") && !addr.equals("index")) {
-                // 直接访问JSP文件
                 hr.setAttribute("msg", "非法访问！");
                 hr.setAttribute("href", hr.getContextPath() + "/index.do");
                 hr.getRequestDispatcher("/WEB-INF/views/result.jsp").forward(request, response);
@@ -73,11 +63,5 @@ public class Filter1LoginCheck implements Filter {
         chain.doFilter(request, response);
     }
 
-    /**
-     * @see Filter#init(FilterConfig)
-     */
-    public void init(FilterConfig fConfig) throws ServletException {
-        // TODO Auto-generated method stub
-    }
-
+    public void init(FilterConfig fConfig) throws ServletException { }
 }

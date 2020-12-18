@@ -235,14 +235,12 @@ public class JDBCTemplate {
 		  }else{
 			  throw new Exception("期望一行数据，实际返回"+result.size()+"行");
 		  }
-		  
 		}
 	
 	// 查询结果分页时，返回分页信息的Map，包括总页数，每页记录数和当前页中的记录。
 	public static Map<String, Object> getPage(String sql, Object[] params, int curPage) throws Exception {
 			Map<String, Object> page = new HashMap<String, Object>();
 			String newSql = sql + " limit " + (curPage - 1) * PAGE_REC_NUM + "," + PAGE_REC_NUM;
-			System.out.println(newSql);
 			List<Map<String, String>> pageList = queryForList(newSql, params);
 			sql = sql.toLowerCase();
 			String countSql = "";

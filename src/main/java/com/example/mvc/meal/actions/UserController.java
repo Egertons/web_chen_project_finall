@@ -1,17 +1,33 @@
 package com.example.mvc.meal.actions;
-
+/**
+ * 该类为用户诸多的功能的“前端控制器”
+ *
+ * @author ZhangLin
+ * @version $Revision: 12.18 2020/12/18
+ *
+ * 变更记录
+ * NO　　　  日期             责任人             变更类型           具体内容
+ * 01　　    2020/12/18      张  霖           代码格式规范　　　　
+ */
 import com.example.mvc.framework.annotations.Controller;
 import com.example.mvc.framework.annotations.RequestMapping;
 import com.example.mvc.framework.model.ModelAndView;
+import com.example.mvc.meal.services.FoodService;
+import com.example.mvc.meal.services.TypeService;
 import com.example.mvc.meal.services.UserService;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 public class UserController {
 	UserService userService = new UserService();
+	FoodService foodService = new FoodService();
+	TypeService typeService = new TypeService();
 
 	//登录后的详情页（首页）(管理员界面)
 	@RequestMapping("/admin/user_list")
@@ -34,6 +50,39 @@ public class UserController {
 		return mv;
 	}
 
+	//普通用户首页
+	@RequestMapping("/user/user_index")
+	public ModelAndView UserIndex(HttpServletRequest request) throws ServletException, IOException {
+		String s_name = request.getParameter("s_fn");
+		String name = "";
+		if(s_name!=null) {
+			name="%"+s_name.trim()+"%";
+		}else {
+			name="%%";
+		}
+		String s_type = request.getParameter("s_type");
+		String f_type = "";
+		if(s_type!=null){
+			f_type="%"+s_type.trim()+"%";
+		}else{
+			f_type="%%";
+		}
+		String pageno = request.getParameter("pageno");
+		int page_no;
+		if(pageno!=null){
+			page_no=Integer.parseInt(pageno);
+		}else{
+			page_no=1;
+		}
+		ModelAndView mv=new ModelAndView("user/user_index");
+		Map foods=foodService.getFoods(name,f_type,page_no);
+		List types=typeService.getAllType();
+		mv.addObject("foods", foods);
+		mv.addObject("types", types);
+		mv.addObject("s_name", s_name);
+		mv.addObject("s_type", s_type);
+		return mv;
+	}
 
 	//管理员界面的用户详情信息修改
 	@RequestMapping("/admin/modify_user")
@@ -43,6 +92,7 @@ public class UserController {
 		mv.addObject("user", user);
 		return mv;
 	}
+
 	//普通用户界面的用户详情信息修改
 	@RequestMapping("/user/user_modify")
 	public ModelAndView userModifyForm(int id) {
@@ -108,6 +158,7 @@ public class UserController {
 		return "result";
 	}
 
+	//普通用户页面的用户更新
 	@RequestMapping("/user/user_update")
 	public String PuTonguserUpdate(HttpServletRequest request) {
 		String id=request.getParameter("id");
@@ -130,6 +181,7 @@ public class UserController {
 		request.setAttribute("href", request.getContextPath()+"/user/user_index.do");
 		return "result";
 	}
+
 	//管理员界面的用户删除
 	@RequestMapping("/admin/del_user")
 	public ModelAndView deleteUser(HttpServletRequest request, int id) {

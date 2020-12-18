@@ -24,27 +24,27 @@
             <div class="row">
                 <div class="col-md-3 col-0"></div>
                 <div class="col-md-6 col-12">
-<%--                    <c:forEach items="${carts }" var="cart" varStatus="vs">--%>
+                    <c:forEach items="${carts }" var="cart" varStatus="vs">
                         <div class="card border-primary">
                             <div class="card-body">
                                 <ul class="list-group">
-                                    <li class="list-group-item active">1888</li>
-                                    <li class="list-group-item">
-                                        皮蛋粥
-                                        <span class="badge badge-pill badge-success p-2 float-right">￥5</span>
-                                    </li>
-                                    <li class="list-group-item">
-                                        蒜泥白肉
-                                        <span class="badge badge-pill badge-success p-2 float-right">￥20</span>
-                                    </li>
+                                    <li class="list-group-item active">${cart.username}</li>
+                                    <c:set value="0" var="sum"/>
+                                    <c:forEach items="${cart['cart'] }" var="d" varStatus="vs">
+                                        <li class="list-group-item">
+                                            ${d.foodname}
+                                            <span class="badge badge-pill badge-success p-2 float-right">￥${d.price}</span>
+                                            <c:set value="${sum+d.price}" var="sum"/>
+                                        </li>
+                                    </c:forEach>
                                     <li class="list-group-item active">
                                         合计
-                                        <span class="badge badge-pill badge-success p-2 float-right">￥25</span>
+                                        <span class="badge badge-pill badge-success p-2 float-right">￥${sum}</span>
                                     </li>
                                 </ul>
                             </div>
                         </div>
-<%--                    </c:forEach>--%>
+                    </c:forEach>
                 </div>
                 <div class="col-md-3 col-0"></div>
             </div>

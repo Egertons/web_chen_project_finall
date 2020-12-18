@@ -17,38 +17,69 @@
 		<script src="${pageContext.servletContext.contextPath }/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 	</head>
 	<body>
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-md-12 col-12">
-					<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
-						<a class="navbar-brand" href="index.do">
-							<span class="text-info" style="letter-spacing: 5px">网络点餐系统</span>
-						</a>
-						<ul class="nav justify-content-end">
-							<li class="nav-item">
-								<button type="button" class="btn btn-primary" style="margin-right: 20px">
-									<a class="nav-link" data-toggle="modal" data-target="#loginModal">登录</a>
-								</button>
-							</li>
-							<li class="nav-item">
-								<button type="button" class="btn btn-success">
-									<a class="nav-link" data-toggle="modal" data-target="#registerModal">注册</a>
-								</button>
-							</li>
-						</ul>
-					</nav>
+		<c:if test="${sessionScope.user==null }">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-12 col-12">
+						<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
+							<a class="navbar-brand" href="index.do">
+								<span class="text-info" style="letter-spacing: 5px">网络点餐系统</span>
+							</a>
+							<ul class="nav justify-content-end">
+								<li class="nav-item">
+									<button type="button" class="btn btn-success">
+										<a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal" style="text-decoration: none;color: aliceblue">登录</a>
+									</button>
+								</li>
+								&nbsp;&nbsp;
+								<li class="nav-item">
+									<button type="button" class="btn btn-warning">
+										<a class="nav-link" href="#" data-toggle="modal" data-target="#registerModal" style="text-decoration: none;color: aliceblue">注册</a>
+									</button>
+								</li>
+							</ul>
+						</nav>
+					</div>
 				</div>
 			</div>
-		</div>
+		</c:if>
+		<c:if test="${not empty sessionScope.user}">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-12 col-12">
+						<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
+							<a class="navbar-brand" href="${pageContext.servletContext.contextPath}/index.do">
+								<span class="text-info" style="letter-spacing: 5px">网络点餐系统</span>
+							</a>
+							<ul class="nav justify-content-end">
+								<li class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+											${user.username}
+									</a>
+									<ul class="dropdown-menu dropdown-menu-right">
+										<li>
+											<a class="nav-link" href="${pageContext.servletContext.contextPath}/logout.do">退出登录</a>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</c:if>
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-4 col-12" style="text-align: center">
-					<h4 class="list-group-item active" style="letter-spacing: 5px">热点菜品</h4>
+					<h4 class="list-group-item active" style="letter-spacing: 5px;font-weight: bolder">热点菜品</h4>
 					<ul class="list-group">
 						<c:forEach items="${hots}" var="hot">
 						<li class="list-group-item">
-							<img class="img-rounded" src="${pageContext.servletContext.contextPath }/${hot.picture}" />
-							<a href="${pageContext.servletContext.contextPath }/show_detail.do?id=${hot.id}" target="_blank" style="text-decoration: none"> ${hot.foodname}</a>
+							<a href="${pageContext.servletContext.contextPath }/show_detail.do?id=${hot.id}">
+								<img class="img-rounded" src="${pageContext.servletContext.contextPath }/${hot.picture}" />
+							</a>
+							&nbsp;&nbsp;
+							<a href="${pageContext.servletContext.contextPath }/show_detail.do?id=${hot.id}" target="_blank" style="text-decoration: none;letter-spacing: 5px"> ${hot.foodname}</a>
 							&nbsp;&nbsp;
 							<span>${hot.price }元</span>
 						</li>
@@ -56,12 +87,15 @@
 					</ul>
 				</div>
 				<div class="col-md-4 col-12" style="text-align: center">
-					<h4 class="list-group-item active" style="letter-spacing: 5px">今日特价</h4>
+					<h4 class="list-group-item active" style="letter-spacing: 5px;font-weight: bolder">今日特价</h4>
 					<ul class="list-group">
 						<c:forEach items="${sales}" var="sale">
 						<li class="list-group-item">
-							<img class="img-rounded" src="${pageContext.servletContext.contextPath }/${sale.picture}" />
-							<a href="${pageContext.servletContext.contextPath }/show_detail.do?id=${sale.id}" target="_blank" style="text-decoration: none"> ${sale.foodname}</a>
+							<a href="${pageContext.servletContext.contextPath }/show_detail.do?id=${sale.id}">
+								<img class="img-rounded" src="${pageContext.servletContext.contextPath }/${sale.picture}" />
+							</a>
+							&nbsp;&nbsp;
+							<a href="${pageContext.servletContext.contextPath }/show_detail.do?id=${sale.id}" target="_blank" style="text-decoration: none;letter-spacing: 5px"> ${sale.foodname}</a>
 							&nbsp;&nbsp;
 							<span>${sale.price}元</span>
 						</li>
@@ -69,12 +103,15 @@
 					</ul>
 				</div>
 				<div class="col-md-4 col-12" style="text-align: center">
-					<h4 class="list-group-item active" style="letter-spacing: 5px">厨师推荐</h4>
+					<h4 class="list-group-item active" style="letter-spacing: 5px;font-weight: bolder">厨师推荐</h4>
 					<ul class="list-group">
 						<c:forEach items="${recommeds}" var="rec">
 						<li class="list-group-item">
-							<img class="img-rounded" src="${pageContext.servletContext.contextPath }/${rec.picture}" />
-							<a href="${pageContext.servletContext.contextPath }/show_detail.do?id=${rec.id}" target="_blank" style="text-decoration: none"> ${rec.foodname}</a>
+							<a href="${pageContext.servletContext.contextPath }/show_detail.do?id=${rec.id}">
+								<img class="img-rounded" src="${pageContext.servletContext.contextPath }/${rec.picture}" />
+							</a>
+							&nbsp;&nbsp;
+							<a href="${pageContext.servletContext.contextPath }/show_detail.do?id=${rec.id}" target="_blank" style="text-decoration: none;letter-spacing: 5px"> ${rec.foodname}</a>
 							&nbsp;&nbsp;
 							<span>${rec.price}元</span>
 						</li>
